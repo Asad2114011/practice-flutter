@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as devtools show log;
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class LoginView extends StatefulWidget {
   State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+ class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
 
@@ -16,7 +17,6 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -24,12 +24,10 @@ class _LoginViewState extends State<LoginView> {
   void dispose() {
     _email.dispose();
     _password.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 
   @override
-  //  class _HomePageState extends State<HomePage>{}
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Login'),backgroundColor: const Color.fromARGB(255, 193, 236, 52),),
@@ -39,7 +37,6 @@ class _LoginViewState extends State<LoginView> {
             controller: _email,
             enableSuggestions: false,
             autocorrect: false,
-            // keyboardType:TextInputType.emailAddress,
             decoration: const InputDecoration(hintText: 'Enter your email here'),
           ),
           TextField(
@@ -57,15 +54,16 @@ class _LoginViewState extends State<LoginView> {
               final password = _password.text;
       
               try {
-                final UserCredential = await FirebaseAuth.instance
+                  await FirebaseAuth.instance
                     .signInWithEmailAndPassword(email: email, password: password);
       
-                print(UserCredential);
+                 Navigator.of(context).pushNamedAndRemoveUntil('/notes/',(route)=>false,);
+
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'invalid-credential') {
-                  print('User Not Found');
+                  devtools.log('User Not Found');
                 } else if (e.code == 'wrong-password') {
-                  print('Wrong password');
+                  devtools.log('Wrong password');
                 } 
               }
             },
