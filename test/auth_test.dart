@@ -88,7 +88,7 @@ class MockAuthProvider implements AuthProvider{
     if(!isInitialized)throw NotInitializedException();
     if(email=='foo@bar.com')throw UserNotFoundAuthException();
     if(password=='foobar')throw WrongPasswordAuthException();
-    final user=AuthUser(email:email,isEmailVerified: false);
+    final user=AuthUser(email:'foo@bar.com',isEmailVerified: false,id: 'my_id');
     _user=user;
     return Future.value(user);
   }
@@ -106,8 +106,14 @@ class MockAuthProvider implements AuthProvider{
     if(!isInitialized)throw NotInitializedException();
     final user=_user;
     if(user==null)throw UserNotFoundAuthException();
-    final newuser=AuthUser(email:user.email,isEmailVerified: true);
+    final newuser=AuthUser(email:'foo@bar.com',isEmailVerified: true,id: 'my_id');
     _user=newuser;
+  }
+  
+  @override
+  Future<void> sendPasswordReset({required String toEmail}) {
+    // TODO: implement sendPasswordReset
+    throw UnimplementedError();
   }
 
 }
